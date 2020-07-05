@@ -4,19 +4,14 @@ main:
     url: /publications/
 
   - title: "Talks"
-    url: /talks/    
+    url: /talks/
 
   - title: "Teaching"
     url: /teaching/    
-    
-  - title: "Portfolio"
-    url: /portfolio/
         
-  - title: "Blog Posts"
-    url: /year-archive/
+  - title: "Blog"
+    url: https://blog.rishabhmehrotra.com/
+    #url: /year-archive/
     
   - title: "CV"
-    url: /cv/
-    
-  - title: "Guide"
-    url: /markdown/
+    url: http://rishabhmehrotra.com/rishabhmehrotra_resume_July2020.pdf
