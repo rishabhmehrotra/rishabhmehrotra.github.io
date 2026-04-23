@@ -217,6 +217,7 @@ permalink: /pitch-narrative-by-investor-type.html
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
+    table-layout: auto;
   }
   .overview-table th {
     text-align: left;
@@ -228,7 +229,9 @@ permalink: /pitch-narrative-by-investor-type.html
     text-transform: uppercase;
     letter-spacing: 0.06em;
     border-bottom: 1px solid #e7e5e4;
-    white-space: nowrap;
+    white-space: normal;
+    vertical-align: bottom;
+    hyphens: auto;
   }
   .overview-table td {
     padding: 14px;
@@ -236,6 +239,10 @@ permalink: /pitch-narrative-by-investor-type.html
     vertical-align: top;
     color: #44403c;
     line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
   .overview-table tr:last-child td { border-bottom: none; }
   .overview-row {
@@ -250,13 +257,27 @@ permalink: /pitch-narrative-by-investor-type.html
     gap: 10px;
     font-weight: 600;
     color: #0c0a09;
-    min-width: 140px;
   }
   .overview-group .dot { margin-top: 6px; }
+  .overview-firms {
+    font-size: 12px;
+    color: #57534e;
+    line-height: 1.45;
+  }
   .overview-question {
     font-style: italic;
     color: #292524;
-    min-width: 180px;
+  }
+  .overview-think {
+    font-size: 12px;
+    color: #44403c;
+    line-height: 1.55;
+  }
+  .overview-lead {
+    font-size: 12px;
+    font-weight: 600;
+    color: #292524;
+    line-height: 1.45;
   }
   .overview-hint {
     margin-top: 14px;
@@ -286,7 +307,7 @@ permalink: /pitch-narrative-by-investor-type.html
 const pitchPlaybooks = [
   {
     type: "Technical Thesis",
-    overviewLead: "Lead with architecture and live proof of what compounds—not category breadth. Let them discover ESI after the moat feels real.",
+    overviewLead: "Architecture + live proof first; ESI after moat. Skip breadth in the opener.",
     examples: "AIX Ventures, Radical Ventures, Air Street Capital, DCVC, Conviction, Amplify Partners, Madrona, Menlo Ventures",
     color: "#2563eb",
     question: "Which technical approach wins?",
@@ -302,7 +323,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Founder + Market",
-    overviewLead: "Lead with the insight only you could have from experience—then traction. They’re betting on you before the stack.",
+    overviewLead: "Your insight, then traction—you before the stack.",
     examples: "Sequoia, Benchmark, Founders Fund, Greylock, Index Ventures, Khosla Ventures, Kleiner Perkins, Accel",
     color: "#dc2626",
     question: "Is this a generational founder?",
@@ -318,7 +339,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Category Creation",
-    overviewLead: "Lead with worldview and a crisp category name—always tethered to proof so it isn’t vapor. ESI language can work here.",
+    overviewLead: "Worldview + category name, proof-tethered. ESI ok if grounded.",
     examples: "a16z, Lux Capital, NEA, Felicis Ventures, Spark Capital, Redpoint Ventures, Obvious Ventures",
     color: "#7c3aed",
     question: "Can we define a new category?",
@@ -334,7 +355,7 @@ const pitchPlaybooks = [
   },
   {
     type: "GTM / Operator",
-    overviewLead: "Lead with land-and-expand, NDR, pipeline, and ICP. Keep vision and ESI out of the opener—they want the machine.",
+    overviewLead: "Land/expand, NDR, pipeline—defer vision and ESI.",
     examples: "Iconiq Growth, Insight Partners, Sapphire Ventures, Bessemer, IVP, Meritech Capital, Altimeter",
     color: "#059669",
     question: "Is this a repeatable machine?",
@@ -350,7 +371,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Enterprise Sector",
-    overviewLead: "Lead with buyer pain and a referenceable customer story. They’ll diligence your logos—make that path easy.",
+    overviewLead: "Buyer pain + strong reference; expect logo diligence.",
     examples: "Lightspeed, Battery Ventures, Norwest, GGV Capital, Wing VC, Emergence Capital, Unusual Ventures, Costanoa",
     color: "#d97706",
     question: "Will my CIO network buy this?",
@@ -366,7 +387,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Metrics-First / Crossover",
-    overviewLead: "Lead with ARR, growth, logos, and expansion—crisp tables, minimal thesis. Optimize for a fast decision.",
+    overviewLead: "ARR, growth, logos—crisp; minimal thesis, fast yes.",
     examples: "Tiger Global, DST Global, Coatue, General Catalyst, Addition, Greenoaks, D1 Capital, Thrive Capital",
     color: "#64748b",
     question: "Are the numbers working?",
@@ -386,6 +407,10 @@ const data = [{ type: "Overview", color: "#57534e", isOverview: true }].concat(p
 
 let selected = 0;
 
+function overviewExampleFirms(examplesCsv) {
+  return examplesCsv.split(",").slice(0, 6).map((s) => s.trim()).filter(Boolean).join(" · ");
+}
+
 function renderOverview(contentEl) {
   const rows = pitchPlaybooks.map((p, i) => `
     <tr class="overview-row" onclick="select(${i + 1})" title="Open ${p.type} playbook">
@@ -395,8 +420,10 @@ function renderOverview(contentEl) {
           <span>${p.type}</span>
         </div>
       </td>
+      <td class="overview-firms mono">${overviewExampleFirms(p.examples)}</td>
       <td class="overview-question mono">“${p.question}”</td>
-      <td>${p.overviewLead}</td>
+      <td class="overview-think">${p.description}</td>
+      <td class="overview-lead">${p.overviewLead}</td>
     </tr>
   `).join('');
 
@@ -417,9 +444,11 @@ function renderOverview(contentEl) {
       <table class="overview-table">
         <thead>
           <tr>
-            <th>Investor grouping</th>
+            <th>Grouping</th>
+            <th>Example firms</th>
             <th>Core question</th>
-            <th>High-level open</th>
+            <th>How they think</th>
+            <th>Lead with</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
