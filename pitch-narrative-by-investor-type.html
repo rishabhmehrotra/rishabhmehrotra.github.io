@@ -212,13 +212,19 @@ permalink: /pitch-narrative-by-investor-type.html
     border-radius: 10px;
     background: #ffffff;
     box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+    max-width: 1180px;
   }
   .overview-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
-    table-layout: auto;
+    table-layout: fixed;
   }
+  .overview-table col.col-group { width: 12%; }
+  .overview-table col.col-firms { width: 18%; }
+  .overview-table col.col-question { width: 28%; }
+  .overview-table col.col-think { width: 26%; }
+  .overview-table col.col-lead { width: 16%; }
   .overview-table th {
     text-align: left;
     padding: 12px 14px;
@@ -267,6 +273,8 @@ permalink: /pitch-narrative-by-investor-type.html
   .overview-question {
     font-style: italic;
     color: #292524;
+    font-size: 14px;
+    line-height: 1.4;
   }
   .overview-think {
     font-size: 12px;
@@ -307,6 +315,7 @@ permalink: /pitch-narrative-by-investor-type.html
 const pitchPlaybooks = [
   {
     type: "Technical Thesis",
+    overviewThink: "Researcher-led funds that decompose your stack and benchmark every piece against named competitors.",
     overviewLead: "Architecture + live proof first; ESI after moat. Skip breadth in the opener.",
     examples: "AIX Ventures, Radical Ventures, Air Street Capital, DCVC, Conviction, Amplify Partners, Madrona, Menlo Ventures",
     color: "#2563eb",
@@ -323,6 +332,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Founder + Market",
+    overviewThink: "Spend the meeting reading the founder; bet on intensity and unfair lived insight over landscape.",
     overviewLead: "Your insight, then traction—you before the stack.",
     examples: "Sequoia, Benchmark, Founders Fund, Greylock, Index Ventures, Khosla Ventures, Kleiner Perkins, Accel",
     color: "#dc2626",
@@ -339,6 +349,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Category Creation",
+    overviewThink: "Buy a worldview and use their platform to make it self-fulfilling—but vision must be backed by traction.",
     overviewLead: "Worldview + category name, proof-tethered. ESI ok if grounded.",
     examples: "a16z, Lux Capital, NEA, Felicis Ventures, Spark Capital, Redpoint Ventures, Obvious Ventures",
     color: "#7c3aed",
@@ -355,6 +366,7 @@ const pitchPlaybooks = [
   },
   {
     type: "GTM / Operator",
+    overviewThink: "Less vision, more mechanics: ICP, sales cycle, NDR, and a repeatable land-and-expand machine.",
     overviewLead: "Land/expand, NDR, pipeline—defer vision and ESI.",
     examples: "Iconiq Growth, Insight Partners, Sapphire Ventures, Bessemer, IVP, Meritech Capital, Altimeter",
     color: "#059669",
@@ -371,6 +383,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Enterprise Sector",
+    overviewThink: "Deep CIO networks; will call portfolio ML leaders to test whether the buyer pain and pull are real.",
     overviewLead: "Buyer pain + strong reference; expect logo diligence.",
     examples: "Lightspeed, Battery Ventures, Norwest, GGV Capital, Wing VC, Emergence Capital, Unusual Ventures, Costanoa",
     color: "#d97706",
@@ -387,6 +400,7 @@ const pitchPlaybooks = [
   },
   {
     type: "Metrics-First / Crossover",
+    overviewThink: "Velocity game on traction: revenue, growth, logos—decide in 1–2 meetings, light on thesis.",
     overviewLead: "ARR, growth, logos—crisp; minimal thesis, fast yes.",
     examples: "Tiger Global, DST Global, Coatue, General Catalyst, Addition, Greenoaks, D1 Capital, Thrive Capital",
     color: "#64748b",
@@ -422,7 +436,7 @@ function renderOverview(contentEl) {
       </td>
       <td class="overview-firms mono">${overviewExampleFirms(p.examples)}</td>
       <td class="overview-question mono">“${p.question}”</td>
-      <td class="overview-think">${p.description}</td>
+      <td class="overview-think">${p.overviewThink}</td>
       <td class="overview-lead">${p.overviewLead}</td>
     </tr>
   `).join('');
@@ -442,6 +456,13 @@ function renderOverview(contentEl) {
     </p>
     <div class="overview-table-wrap">
       <table class="overview-table">
+        <colgroup>
+          <col class="col-group">
+          <col class="col-firms">
+          <col class="col-question">
+          <col class="col-think">
+          <col class="col-lead">
+        </colgroup>
         <thead>
           <tr>
             <th>Grouping</th>
