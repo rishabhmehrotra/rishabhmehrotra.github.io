@@ -1,0 +1,383 @@
+---
+layout: null
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch Narrative by Investor Type — Pavo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e5e5e5;
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+    padding: 32px 24px;
+    min-height: 100vh;
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #737373;
+    margin-top: 6px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 24px 0;
+  }
+  .tab {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1.5px solid #262626;
+    background: #141414;
+    color: #a3a3a3;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    transition: all 0.15s ease;
+  }
+  .tab:hover { border-color: #404040; color: #d4d4d4; }
+  .tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+  .header-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .examples-text {
+    font-size: 11px;
+    color: #737373;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .question {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .flow { margin-bottom: 22px; }
+  .step {
+    display: flex;
+    gap: 14px;
+  }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 22px;
+    flex-shrink: 0;
+  }
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 2px solid var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+  .line {
+    width: 1.5px;
+    flex-grow: 1;
+    background: #262626;
+    min-height: 20px;
+  }
+  .step-content {
+    padding-bottom: 18px;
+    flex: 1;
+  }
+  .step:last-child .step-content { padding-bottom: 0; }
+  .step-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+    color: var(--accent);
+  }
+  .step-text {
+    font-size: 14px;
+    color: #d4d4d4;
+    line-height: 1.55;
+  }
+  .advice-cards { display: flex; flex-direction: column; gap: 10px; }
+  .do-card {
+    background: #052e16;
+    border: 1px solid #14532d;
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .do-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .do-text { font-size: 13px; color: #bbf7d0; line-height: 1.5; }
+  .dont-card {
+    background: #1c0a0a;
+    border: 1px solid #450a0a;
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .dont-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #f87171;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .dont-text { font-size: 13px; color: #fecaca; line-height: 1.5; }
+  .desc-card {
+    background: #141414;
+    border: 1px solid #1f1f1f;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #a3a3a3;
+    line-height: 1.6;
+  }
+  .desc-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #525252;
+    margin-bottom: 8px;
+  }
+  .footer-note {
+    margin-top: 24px;
+    padding: 14px 16px;
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #a3a3a3;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  @media (max-width: 480px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Pitch Narrative by Investor Type</h1>
+<p class="subtitle mono">Same product. Different sequence.</p>
+
+<div class="tabs" id="tabs"></div>
+<div id="content"></div>
+
+<div class="footer-note">
+  Same demo. Same traction. Same team. The only thing that changes is the sequence and emphasis. ESI is always the destination — the question is whether the investor discovers it or gets told it.
+</div>
+
+<script>
+const data = [
+  {
+    type: "Technical Thesis",
+    examples: "AIX Ventures, Radical Ventures, Air Street Capital, DCVC, Conviction, Amplify Partners, Madrona, Menlo Ventures",
+    color: "#2563eb",
+    question: "Which technical approach wins?",
+    description: "Deep domain expertise, often founded by researchers. They decompose your product into components and ask \"is each piece defensible?\" They know the competitive landscape intimately — often better than you do. The risk: they over-rotate on \"who else is doing this\" and under-weight execution and distribution advantages. Broad pitches scare them because they can name 3 companies attacking each sub-problem.",
+    flow: [
+      { label: "Open", content: "The loop that runs every tech company takes a quarter and 8 people. We compress it to weeks." },
+      { label: "Proof", content: "Live demo: tribal knowledge → diagnostic → intervention → 9% metric lift. Show the system, not slides." },
+      { label: "Moat", content: "Tribal knowledge graph compounds per customer. Every loop makes the next loop faster. No one else has this data asset." },
+      { label: "Expand", content: "One system → multi-system → the infrastructure layer for self-improving enterprises." }
+    ],
+    doText: "Lead with architectural insight. Show what compounds and can't be copied.",
+    dontText: "Don't lead with ESI. Don't show breadth across 5 system types — they'll name a competitor for each."
+  },
+  {
+    type: "Founder + Market",
+    examples: "Sequoia, Benchmark, Founders Fund, Greylock, Index Ventures, Khosla Ventures, Kleiner Perkins, Accel",
+    color: "#dc2626",
+    question: "Is this a generational founder?",
+    description: "They spend most of the meeting reading you, not your deck. Do you have the intensity, the insight, the unfair advantage from lived experience? They want to feel like you see something nobody else sees. Competitive landscape matters less — they believe the best founder wins regardless.",
+    flow: [
+      { label: "Open", content: "I spent 5 years at Spotify. Only 2 of 30 researchers actually moved metrics. I was one of them. That mental model doesn't exist anywhere." },
+      { label: "Proof", content: "We took a 35M DAU company from 2012-era systems to 2021-era in two iteration loops. 9% time-spent lift — one of their biggest wins in 6 months." },
+      { label: "Market", content: "Every company with data-driven systems spends 8-figure budgets trying to do this with headcount. That's the market." },
+      { label: "Expand", content: "First customer: 1 system. Now running 3. They're starting to run their company on us. That's where this goes." }
+    ],
+    doText: "Lead with your personal insight — the thing you see that no one else does. Make them bet on you.",
+    dontText: "Don't over-explain the technical stack. Don't frame it as tooling. Frame it as a market you're going to own."
+  },
+  {
+    type: "Category Creation",
+    examples: "a16z, Lux Capital, NEA, Felicis Ventures, Spark Capital, Redpoint Ventures, Obvious Ventures",
+    color: "#7c3aed",
+    question: "Can we define a new category?",
+    description: "They want to publish the blog post, host the conference, shape the industry narrative. They invest in a worldview and then use their platform to make it self-fulfilling. \"Enterprise super intelligence\" is the kind of language they love — but it has to be backed by enough traction that it doesn't feel like vaporware.",
+    flow: [
+      { label: "Open", content: "The last 20 years were about building ML systems one at a time. The next 10 are about autonomous enterprise systems that improve themselves." },
+      { label: "Proof", content: "We've already done it — compressed a decade of system iteration into weeks. Here's the case study. Here's the metric lift." },
+      { label: "Category", content: "This isn't MLOps. It's not AI infra. It's enterprise system intelligence — a new layer that doesn't exist yet." },
+      { label: "Expand", content: "One system, then three, then the operating system for how companies get built. We're naming and owning this category." }
+    ],
+    doText: "Lead with the worldview. Give them the blog post they want to write. ESI framing can work here — but anchor it in proof.",
+    dontText: "Don't be incremental. Don't compare to existing categories. Don't undersell the vision."
+  },
+  {
+    type: "GTM / Operator",
+    examples: "Iconiq Growth, Insight Partners, Sapphire Ventures, Bessemer, IVP, Meritech Capital, Altimeter",
+    color: "#059669",
+    question: "Is this a repeatable machine?",
+    description: "They care less about vision and more about mechanics. What's the sales motion? What's the expansion playbook? What's the NDR? They'll dig into your rabbits and enterprise deals and ask: \"What does the pipeline look like in 12 months? What's the ICP? How do you shorten that sales cycle?\" They love the 4x expansion on your first contract — that's exactly what they want to hear.",
+    flow: [
+      { label: "Open", content: "First contract: 6 figures after POC. 4x expansion within the account. Second system onboarded without additional sales effort." },
+      { label: "Proof", content: "6-7 active customers. One enterprise deal just closed after 5.5 months. Top 5 media companies in India on platform." },
+      { label: "Motion", content: "Land with one ML system, expand to adjacent systems within same account. Net expansion is the growth engine, not new logos." },
+      { label: "Expand", content: "Vertical GTM: consumer marketplaces first, then insurance, then B2B. Each vertical gets its own GM." }
+    ],
+    doText: "Lead with unit economics and expansion mechanics. Show the land-and-expand flywheel with real numbers.",
+    dontText: "Don't lead with vision. Don't talk about ESI at all. They want to see the business machine."
+  },
+  {
+    type: "Enterprise Sector",
+    examples: "Lightspeed, Battery Ventures, Norwest, GGV Capital, Wing VC, Emergence Capital, Unusual Ventures, Costanoa",
+    color: "#d97706",
+    question: "Will my CIO network buy this?",
+    description: "They have deep relationships with CIOs, VPs of Engineering, and Heads of ML at Fortune 500s. They're asking: \"If I call 5 ML leaders at my portfolio companies, will they say they need this?\" They'll want to do customer diligence calls early. Your customer traction and the 9% metric lift story is gold for these funds.",
+    flow: [
+      { label: "Open", content: "The VP of ML at a 35M DAU company told us this was their biggest metric win in 6 months. Here's why." },
+      { label: "Proof", content: "Demo the full loop. Tribal knowledge extraction, approaches tried, production deployment, measurable outcome." },
+      { label: "Buyer", content: "The buyer is the VP of ML/Data who's spending $2M/year on headcount to do what we do in weeks. We replace a team, not a tool." },
+      { label: "Expand", content: "Once inside, the VP of Content asks to onboard. Then Marketing. Multi-system expansion is organic, not sold." }
+    ],
+    doText: "Lead with customer voice. Have a referenceable customer ready. They'll call them before meeting 2.",
+    dontText: "Don't pitch the OS vision. Pitch the pain point their portfolio companies will recognise."
+  },
+  {
+    type: "Metrics-First / Crossover",
+    examples: "Tiger Global, DST Global, Coatue, General Catalyst, Addition, Greenoaks, D1 Capital, Thrive Capital",
+    color: "#64748b",
+    question: "Are the numbers working?",
+    description: "Running a numbers game at higher velocity. Less time on thesis, more time on traction. They'll ask for revenue, growth rate, and logo quality — and decide in 1-2 meetings. Less relationship-driven, more metrics-driven. The upside is speed and check size. The downside is they won't add much beyond capital.",
+    flow: [
+      { label: "Open", content: "ARR, growth rate, pipeline. Here's where we are, here's the trajectory, here's what the round funds." },
+      { label: "Proof", content: "Logo quality, expansion revenue, customer retention. Hard numbers, no narrative." },
+      { label: "Comp", content: "Statsig acquired at $X. We're doing what they did plus the full iteration loop. Here's the TAM math." },
+      { label: "Expand", content: "This round gets us to Y customers and Z ARR. That sets up a Series B at [target valuation]." }
+    ],
+    doText: "Lead with numbers. Be crisp. They'll decide in 1-2 meetings. Make it easy to say yes fast.",
+    dontText: "Don't spend time on vision or technical depth. They're running a velocity game. Respect that."
+  }
+];
+
+let selected = 0;
+
+function render() {
+  const d = data[selected];
+  const accentBg = d.color + "18";
+
+  // Tabs
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = data.map((item, i) => {
+    const isActive = i === selected;
+    const style = isActive
+      ? `border-color:${item.color};background:${item.color}18;color:${item.color}`
+      : '';
+    return `<button class="tab ${isActive ? 'active' : ''}" style="${style}" onclick="select(${i})">${item.type}</button>`;
+  }).join('');
+
+  // Content
+  const contentEl = document.getElementById('content');
+  contentEl.style.setProperty('--accent', d.color);
+  contentEl.style.setProperty('--accent-bg', accentBg);
+
+  const stepsHtml = d.flow.map((step, i) => {
+    const isLast = i === d.flow.length - 1;
+    return `
+      <div class="step">
+        <div class="timeline">
+          <div class="step-num">${i + 1}</div>
+          ${!isLast ? '<div class="line"></div>' : ''}
+        </div>
+        <div class="step-content" ${isLast ? 'style="padding-bottom:0"' : ''}>
+          <div class="step-label mono">${step.label}</div>
+          <p class="step-text">${step.content}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  contentEl.innerHTML = `
+    <div class="header-card">
+      <div class="header-top">
+        <div class="dot" style="background:${d.color}"></div>
+        <span class="examples-text mono">${d.examples}</span>
+      </div>
+      <p class="question">"${d.question}"</p>
+    </div>
+
+    <div class="desc-card">
+      <div class="desc-label mono">How they think</div>
+      ${d.description}
+    </div>
+
+    <div class="flow">${stepsHtml}</div>
+
+    <div class="advice-cards">
+      <div class="do-card">
+        <div class="do-label mono">&#10003; Do</div>
+        <p class="do-text">${d.doText}</p>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label mono">&#10007; Don't</div>
+        <p class="dont-text">${d.dontText}</p>
+      </div>
+    </div>
+  `;
+}
+
+function select(i) {
+  selected = i;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
