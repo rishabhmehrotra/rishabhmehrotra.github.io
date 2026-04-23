@@ -199,9 +199,74 @@ permalink: /pitch-narrative-by-investor-type.html
     line-height: 1.5;
     font-style: italic;
   }
+  .overview-intro {
+    font-size: 14px;
+    color: #44403c;
+    line-height: 1.65;
+    margin-bottom: 18px;
+    max-width: 720px;
+  }
+  .overview-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e7e5e4;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+  }
+  .overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .overview-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: #fafaf9;
+    color: #57534e;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid #e7e5e4;
+    white-space: nowrap;
+  }
+  .overview-table td {
+    padding: 14px;
+    border-bottom: 1px solid #f5f5f4;
+    vertical-align: top;
+    color: #44403c;
+    line-height: 1.5;
+  }
+  .overview-table tr:last-child td { border-bottom: none; }
+  .overview-row {
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .overview-row:hover { background: #fafaf9; }
+  .overview-row:active { background: #f5f5f4; }
+  .overview-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 600;
+    color: #0c0a09;
+    min-width: 140px;
+  }
+  .overview-group .dot { margin-top: 6px; }
+  .overview-question {
+    font-style: italic;
+    color: #292524;
+    min-width: 180px;
+  }
+  .overview-hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #78716c;
+  }
   @media (max-width: 480px) {
     body { padding: 20px 16px; }
     h1 { font-size: 20px; }
+    .overview-table th, .overview-table td { padding: 10px 12px; }
   }
 </style>
 </head>
@@ -218,9 +283,10 @@ permalink: /pitch-narrative-by-investor-type.html
 </div>
 
 <script>
-const data = [
+const pitchPlaybooks = [
   {
     type: "Technical Thesis",
+    overviewLead: "Lead with architecture and live proof of what compounds—not category breadth. Let them discover ESI after the moat feels real.",
     examples: "AIX Ventures, Radical Ventures, Air Street Capital, DCVC, Conviction, Amplify Partners, Madrona, Menlo Ventures",
     color: "#2563eb",
     question: "Which technical approach wins?",
@@ -236,6 +302,7 @@ const data = [
   },
   {
     type: "Founder + Market",
+    overviewLead: "Lead with the insight only you could have from experience—then traction. They’re betting on you before the stack.",
     examples: "Sequoia, Benchmark, Founders Fund, Greylock, Index Ventures, Khosla Ventures, Kleiner Perkins, Accel",
     color: "#dc2626",
     question: "Is this a generational founder?",
@@ -251,6 +318,7 @@ const data = [
   },
   {
     type: "Category Creation",
+    overviewLead: "Lead with worldview and a crisp category name—always tethered to proof so it isn’t vapor. ESI language can work here.",
     examples: "a16z, Lux Capital, NEA, Felicis Ventures, Spark Capital, Redpoint Ventures, Obvious Ventures",
     color: "#7c3aed",
     question: "Can we define a new category?",
@@ -266,6 +334,7 @@ const data = [
   },
   {
     type: "GTM / Operator",
+    overviewLead: "Lead with land-and-expand, NDR, pipeline, and ICP. Keep vision and ESI out of the opener—they want the machine.",
     examples: "Iconiq Growth, Insight Partners, Sapphire Ventures, Bessemer, IVP, Meritech Capital, Altimeter",
     color: "#059669",
     question: "Is this a repeatable machine?",
@@ -281,6 +350,7 @@ const data = [
   },
   {
     type: "Enterprise Sector",
+    overviewLead: "Lead with buyer pain and a referenceable customer story. They’ll diligence your logos—make that path easy.",
     examples: "Lightspeed, Battery Ventures, Norwest, GGV Capital, Wing VC, Emergence Capital, Unusual Ventures, Costanoa",
     color: "#d97706",
     question: "Will my CIO network buy this?",
@@ -296,6 +366,7 @@ const data = [
   },
   {
     type: "Metrics-First / Crossover",
+    overviewLead: "Lead with ARR, growth, logos, and expansion—crisp tables, minimal thesis. Optimize for a fast decision.",
     examples: "Tiger Global, DST Global, Coatue, General Catalyst, Addition, Greenoaks, D1 Capital, Thrive Capital",
     color: "#64748b",
     question: "Are the numbers working?",
@@ -311,24 +382,74 @@ const data = [
   }
 ];
 
+const data = [{ type: "Overview", color: "#57534e", isOverview: true }].concat(pitchPlaybooks);
+
 let selected = 0;
+
+function renderOverview(contentEl) {
+  const rows = pitchPlaybooks.map((p, i) => `
+    <tr class="overview-row" onclick="select(${i + 1})" title="Open ${p.type} playbook">
+      <td>
+        <div class="overview-group">
+          <span class="dot" style="background:${p.color}"></span>
+          <span>${p.type}</span>
+        </div>
+      </td>
+      <td class="overview-question mono">“${p.question}”</td>
+      <td>${p.overviewLead}</td>
+    </tr>
+  `).join('');
+
+  contentEl.innerHTML = `
+    <div class="header-card">
+      <div class="header-top">
+        <div class="dot" style="background:#57534e"></div>
+        <span class="examples-text mono">Map before detail</span>
+      </div>
+      <p class="question">How should the narrative change by investor?</p>
+    </div>
+    <p class="overview-intro">
+      Most funds fall into a handful of <strong>decision lenses</strong>—technical decomposition, founder conviction, category narrative,
+      GTM mechanics, enterprise buyer pull, or raw traction. It’s the same company: you’re reordering what comes first, what gets depth,
+      and what stays implicit until the right moment.
+    </p>
+    <div class="overview-table-wrap">
+      <table class="overview-table">
+        <thead>
+          <tr>
+            <th>Investor grouping</th>
+            <th>Core question</th>
+            <th>High-level open</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p class="overview-hint mono">Click a row to open the full flow, do/don’t, and example funds for that grouping.</p>
+  `;
+}
 
 function render() {
   const d = data[selected];
-  const accentBg = d.color + "18";
+  const contentEl = document.getElementById('content');
 
-  // Tabs
   const tabsEl = document.getElementById('tabs');
   tabsEl.innerHTML = data.map((item, i) => {
     const isActive = i === selected;
     const style = isActive
       ? `border-color:${item.color};background:${item.color}18;color:${item.color}`
       : '';
-    return `<button class="tab ${isActive ? 'active' : ''}" style="${style}" onclick="select(${i})">${item.type}</button>`;
+    return `<button type="button" class="tab ${isActive ? 'active' : ''}" style="${style}" onclick="select(${i})">${item.type}</button>`;
   }).join('');
 
-  // Content
-  const contentEl = document.getElementById('content');
+  if (d.isOverview) {
+    contentEl.style.setProperty('--accent', d.color);
+    contentEl.style.setProperty('--accent-bg', d.color + "18");
+    renderOverview(contentEl);
+    return;
+  }
+
+  const accentBg = d.color + "18";
   contentEl.style.setProperty('--accent', d.color);
   contentEl.style.setProperty('--accent-bg', accentBg);
 
